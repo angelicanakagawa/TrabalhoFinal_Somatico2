@@ -1,12 +1,12 @@
-# TrabalhoFinal_Somatico2
-Trabalho final - Grupo Somático 2. Trabalho final do curso de pós-graduação em Bioinformática Aplicada a Genômica Médica - Einstein
+# Trabalho final - Grupo Somático 2
+Trabalho final do curso de pós-graduação em Bioinformática Aplicada a Genômica Médica - Einstein
 
 Integrantes:
-Ana Vitória Volpato Jensen
-Angelica Nakagawa Lima
-Antônio José Sousa Soares
-Edgar da Costa Silva
-Nicholy Cristine Forner Lozano
+- Ana Vitória Volpato Jensen
+- Angelica Nakagawa Lima
+- Antônio José Sousa Soares
+- Edgar da Costa Silva
+- Nicholy Cristine Forner Lozano
 
 # Filtragem de variantes somáticas - Painel de Mielofibrose com pronóstico ruim
  - Este pipeline se destina à filtrar variantes somáticas que ofereçam prognóstico ruim para a doença de mielofibrose.
