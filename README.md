@@ -15,3 +15,8 @@ CALR, CBL, EZH2, GFI1B, IDH1, IDH2, JAK2, KRAS, MPIG6B, MPL, NBEAL2, NRAS, SH2B3
 TP53, U2AF1.
 
 ![image](https://github.com/angelicanakagawa/TrabalhoFinal_Somatico2/assets/91493865/6d05c667-7227-4f89-9d2a-fe8061b36701)
+Figura 1. Esquema do pipeline utilizado neste trabalho. Autoria: Ana Vitória V. Jensen
+
+# Etapa 1.: Preparação do ambiente
+> from google.colab import drive
+> drive.mount('/content/drive')
