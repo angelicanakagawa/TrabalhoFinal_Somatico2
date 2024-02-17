@@ -467,6 +467,84 @@ fig.write_html('/content/resultados/GenesDrive.html')
 fig.show()
 ```
 
+> Etapa 6. Interpretador do Genoma do Câncer (CGI)
+
+Gerando o arquivos .txt com as colunas: CHR, POS, REF e ALT. Esses arquivos serão utilizandos juntos com a API.
+
+```
+%%bash
+mkdir /content/CGI
+
+cd /content/lmabrasil-hg38/vep_output/
+
+for file in *.vep.filter.tsv; do
+    base=$(basename "$file" .vep.filter.tsv)
+    cut -f1-4 "$file" | sed -e "s/CHROM/CHR/g" > "/content/CGI/df_${base}-cgi.txt"
+done
+```
+
+Enviando um Job
+```
+import requests
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
+payload = {'cancer_type': 'HEMATO', 'title': 'Somatic MF', 'reference': 'hg38'}
+r = requests.post('https://www.cancergenomeinterpreter.org/api/v1',
+                headers=headers,
+                files={
+                        'mutations': open('/content/CGI/df_liftOver_WP276_hg19ToHg38-cgi.txt', 'rb')
+                        },
+                data=payload)
+r.json()
+```
+Visualizando os identificadores
+```
+import requests
+job_id ="149e726abf0bd8ad9f6f"
+
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
+r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers)
+r.json()
+```
+Acessando informações do Job
+```
+import requests
+job_id ="149e726abf0bd8ad9f6f"
+
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
+payload={'action':'logs'}
+r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers, params=payload)
+r.json()
+```
+Download dos Resultados (file.zip)
+```
+import requests
+job_id ="149e726abf0bd8ad9f6f"
+
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
+payload={'action':'download'}
+r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers, params=payload)
+with open('/content/CGI/file.zip', 'wb') as fd:
+    fd.write(r._content)
+```
+```
+!unzip /content/CGI/file.zip
+```
+```
+import pandas as pd
+
+pd.read_csv('/content/CGI/alterations.tsv', sep='\t', index_col=False, engine='python')
+
+
+pd.read_csv('/content/CGI/biomarkers.tsv',sep='\t',index_col=False, engine= 'python')
+
+import requests
+#job_id ="3cf2faf653502b3b458d"
+
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
+r = requests.delete('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers)
+r.json()
+```
+
 > Teste CGI
 ```
 mkdir /content/CGI
