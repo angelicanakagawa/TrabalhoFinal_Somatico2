@@ -338,7 +338,7 @@ dados = pd.read_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv')
 dados = dados.rename(columns={'TumorID': 'AMOSTRA'})
 dados.to_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv', index = False)
 ```
-
+![image](https://github.com/angelicanakagawa/TrabalhoFinal_Somatico2/figura1.png)
 Figura 1 - Quantidade de variantes por gene
 
 ```
