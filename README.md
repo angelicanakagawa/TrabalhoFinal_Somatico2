@@ -472,48 +472,45 @@ fig.show()
 %%bash
 cd /content/lmabrasil-hg38/vep_output/
 
-# Loop para gerar os os nomes dos arquivos utilizados referente as amostras
-for file in *.vep.filter.tsv; do
-    base=$(basename "$file" .vep.filter.tsv)
-    cut -f1-4 "$file" | sed -e "s/CHROM/CHR/g" > "df_${base}-cgi.txt"
-done
 
-cut -f1-4 /content/lmabrasil-hg38/vep_output/liftOver_WP048_hg19ToHg38.vep.filter.tsv | sed -e "s/CHROM/CHR/g"  > df_tes-cgi.txt
-head df_tes-cgi.txt
+%%bash
+# Gerar o arquivo "df_WP048-cgi.txt" com as colunas: CHR, POS, REF e ALT
+cut -f1-4 /content/lmabrasil-hg38/vep_output/liftOver_WP048_hg19ToHg38.vep.filter.tsv | sed -e "s/CHROM/CHR/g"  > df_WP048-cgi.txt
+head df_WP048-cgi.txt
 
+# Enviando um Job
 import requests
-job_id ="8acec4b74bf60b19dc30"
-
-headers = {'Authorization': 'analisesomatico@gmail.com 8f5084af0e4523a0ac4d'}
-r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers)
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
+payload = {'cancer_type': 'HEMATO', 'title': 'Somatic MF', 'reference': 'hg38'}
+r = requests.post('https://www.cancergenomeinterpreter.org/api/v1',
+                headers=headers,
+                files={
+                        'mutations': open('/content/CGI/df_liftOver_WP276_hg19ToHg38-cgi.txt', 'rb')
+                        },
+                data=payload)
 r.json()
 
+# Visualizando os identificadores
 import requests
-job_id ="8acec4b74bf60b19dc30"
+job_id ="3cf2faf653502b3b458d"
 
-headers = {'Authorization': 'analisesomatico@gmail.com 8f5084af0e4523a0ac4d'}
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
 payload={'action':'logs'}
 r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers, params=payload)
 r.json()
 
-mkdir cgi_files
+# Download dos Resultados (file.zip)
+import requests
+job_id ="3cf2faf653502b3b458d"
 
-!unzip /content/cgi_files/file.zip -d /content/cgi_files/
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
+payload={'action':'download'}
+r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers, params=payload)
+with open('/content/CGI/file.zip', 'wb') as fd:
+    fd.write(r._content)
+
+!unzip /content/CGI/file.zip -d /content/CGI/
 
 import pandas as pd
-
-pd.read_csv('/content/cgi_files/alterations.tsv', sep='\t', index_col=False, engine='python')
-
-pd.read_csv('/content/cgi_files/biomarkers.tsv',sep='\t',index_col=False, engine= 'python')
-
-import requests
-#job_id ="be69dc21d218f22e5f7e"
-
-headers = {'Authorization': 'analisesomatico@gmail.com 8f5084af0e4523a0ac4d'}
-r = requests.delete('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers)
-r.json()
+pd.read_csv('/content/CGI/alterations.tsv', sep='\t', index_col=False, engine='python')
 ```
-
-
-
-
