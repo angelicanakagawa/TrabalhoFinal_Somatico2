@@ -54,6 +54,7 @@ make install
 1.5. Instalar o GATK - download e descompactação
 
 ```
+%%bash
 wget -c https://github.com/broadinstitute/gatk/releases/download/4.2.6.1/gatk-4.2.6.1.zip
 unzip gatk-4.2.6.1.zip
 ```
@@ -108,7 +109,7 @@ gunzip hg19ToHg38.over.chain.gz
 ```
 %%bash
 # Criar o caminho dos VCF's deste projeto
-path_vcf = "/content/TrabalhoFinal_Somatico2/arquivos_lmabrasil/vcfs_hg19"
+path_vcf="/content/TrabalhoFinal_Somatico2/arquivos_lmabrasil/vcfs_hg19"
 
 # Criar diretório de resultados
 mkdir resultados
@@ -119,9 +120,8 @@ cd resultados/vcfs_hg38
 
 # Loop para alterar todos os vcfs
 for filename in ${path_vcf}/*.filtered.vcf.gz; do
-
   # Extrair o nome da amostra
-  sample = $(basename "$filename" .vcf.gz)
+  sample=$(basename "$filename" .vcf.gz)
 
   # Extrair o cabeçalho
   zgrep "\#" ${path_vcf}/${sample}.vcf.gz > header.txt
@@ -198,6 +198,7 @@ Esta etapa é demorada para ser realizada no colab. Portanto, os comandos foram 
 Abaixo estão os comandos utilizados para uma única amostra (WP306):
 
 ```
+%%bash
 # Criar um diretório para armazenar os resultados finais da anotação (utilizar o comando "chmod 777" para permitir que usuários leiam, editem e executem arquivos no diretório criado)
 mkdir -p vep_output
 chmod 777 vep_output
@@ -258,8 +259,7 @@ cp /content/TrabalhoFinal_Somatico2/arquivos_lmabrasil/lmabrasil-lifOverhg19ToHg
 
 ```
 %%bash
-echo -e 
-"TP53\nCALR\nGFI1B\nJAK2\nMPIG6B\nMPL\nNBEAL2\nSH2B3\nSHOC2\nSRC\nTBXAS1\nTET2\nTLR8\nEZH2\nCBL\nU2AF1\nSRSF2\nIDH1\nIDH2\nNRAS\nKRAS\n" > /content/lmabrasil-hg38/hpo/mielofibrose.txt
+echo -e "TP53\nCALR\nGFI1B\nJAK2\nMPIG6B\nMPL\nNBEAL2\nSH2B3\nSHOC2\nSRC\nTBXAS1\nTET2\nTLR8\nEZH2\nCBL\nU2AF1\nSRSF2\nIDH1\nIDH2\nNRAS\nKRAS\n" > /content/lmabrasil-hg38/hpo/mielofibrose.txt
 ```
 
 4.3. Listar os nomes das 30 amostras do projeto LMA Brasil
@@ -303,11 +303,13 @@ import pandas as pd
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_colwidth', None)
 
-/content/lmabrasil-hg38/csv_filtrados
+# Criar um diretório para as amostras
 !mkdir /content/lmabrasil-hg38/csv_filtrados
+
+# Colocar as amostras no local certo e em ".csv"
 for i in SAMPLES:
   df = pd.read_csv(f'/content/lmabrasil-hg38/vep_output/liftOver_{i}_hg19ToHg38.vep.filter.tsv',sep='\t',index_col=False)
-  df.to_csv(f'/content/lmabrasil-hg38/csv_filtrados/{i}_filtrado.csv', index=False)
+  df.to_csv(f'/content/lmabrasil-hg38/csv_filtrados/{i}_filtrado.csv', index = False)
 ```
 
 ### Etapa 5. Montar uma tabela final e vizualizar os resultados
@@ -328,13 +330,13 @@ df_concat = pd.concat([pd.read_csv(i) for i in csv_files], ignore_index=True)
 
 # Criar um diretório para a tabela final transformando a mesma para o formato CSV
 !mkdir /content/lmabrasil-hg38/tabela_final
-df_concat.to_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv', index=False)
+df_concat.to_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv', index = False)
 df_concat
 
 # Alterar a coluna "TumorId" para "AMOSTRA"
 dados = pd.read_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv')
 dados = dados.rename(columns={'TumorID': 'AMOSTRA'})
-dados.to_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv', index=False)
+dados.to_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv', index = False)
 ```
 
 Figura 1 - Quantidade de variantes por gene
@@ -434,9 +436,9 @@ plt.title('Frequência de amostras com alterações em genes de alto risco')
 plt.show()
 ```
 
-### Variantes em genes driver
+### Encontrar variantes em genes driver
 
-> Curiosamente, dados da literatura (https://doi.org/10.1200/JCO.2016.70.7968) mostram que mais de 90% dos casos de mielofibrose envolvem mutações somáticas nos genes driver JAK2, CALR ou MPL, o que leva a uma ativação constitutiva da via JAK-STAT5.
+> Curiosamente, dados da literatura (https://doi.org/10.1200/JCO.2016.70.7968) mostram que mais de 90% dos casos de mielofibrose envolvem mutações somáticas nos genes driver *JAK2*, *CALR* ou *MPL*, o que leva a uma ativação constitutiva da via *JAK-STAT5*.
 
 ```
 import pandas as pd
@@ -470,6 +472,7 @@ fig.show()
 %%bash
 cd /content/lmabrasil-hg38/vep_output/
 
+# Loop para gerar os os nomes dos arquivos utilizados referente as amostras
 for file in *.vep.filter.tsv; do
     base=$(basename "$file" .vep.filter.tsv)
     cut -f1-4 "$file" | sed -e "s/CHROM/CHR/g" > "df_${base}-cgi.txt"
