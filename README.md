@@ -14,6 +14,7 @@ Integrantes:
 *CALR*, *CBL*, *EZH2*, *GFI1B*, *IDH1*, *IDH2*, *JAK2*, *KRAS*, *MPIG6B*, *MPL*, *NBEAL2*, *NRAS*, *SH2B3*, *SHOC2*, *SRC*, *SRSF2*, *TBXAS1*, *TET2*, *TLR8*, *TP53*, *U2AF1*.
 
 ![image](https://github.com/angelicanakagawa/TrabalhoFinal_Somatico2/assets/91493865/6d05c667-7227-4f89-9d2a-fe8061b36701)
+
 **Figura 1.** Esquema do pipeline realizado neste trabalho. Autoria: Ana Vitória V. Jensen
 
 ### Etapa 1. Preparar do ambiente
@@ -339,6 +340,7 @@ dados = dados.rename(columns={'TumorID': 'AMOSTRA'})
 dados.to_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv', index = False)
 ```
 ![image](https://github.com/angelicanakagawa/TrabalhoFinal_Somatico2/figura1.png)
+
 Figura 1 - Quantidade de variantes por gene
 
 ```
