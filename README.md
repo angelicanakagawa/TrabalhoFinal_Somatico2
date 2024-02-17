@@ -1,4 +1,5 @@
 # Trabalho final - Pipeline Somático 2
+
 Trabalho final do curso de pós-graduação em Bioinformática Aplicada a Genômica Médica - Einstein
 
 Integrantes:
@@ -17,10 +18,11 @@ Integrantes:
 
 **Figura 1.** Esquema do pipeline realizado neste trabalho. Autoria: Ana Vitória V. Jensen
 
+**link para o site do trabalho:**
+https://sites.google.com/view/pipelinevariantessomaticas/p%C3%A1gina-inicial
+
 Os comandos foram criados em um Google colab. Abaixo está o link para o colab:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1JGIHMrrj0TAlO0BMhZAr7r1UJAgM8SYx/view?usp=sharing)
-
-
 
 ### Etapa 1. Preparar do ambiente
 
