@@ -17,6 +17,11 @@ Integrantes:
 
 **Figura 1.** Esquema do pipeline realizado neste trabalho. Autoria: Ana Vitória V. Jensen
 
+Os comandos foram criados em um Google colab. Abaixo está o link para o colab:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1JGIHMrrj0TAlO0BMhZAr7r1UJAgM8SYx/view?usp=sharing)
+
+
+
 ### Etapa 1. Preparar do ambiente
 
 1.1. Obter acesso aos arquivos dentro de seu Drive através do Colab
@@ -29,7 +34,6 @@ drive.mount('/content/drive')
 1.2. Clonar o github do projeto lmabrasil
 
 ```
-%%bash
 rm -rf lmabrasil-hg38
 git clone https://github.com/renatopuga/lmabrasil-hg38
 ```
@@ -37,14 +41,12 @@ git clone https://github.com/renatopuga/lmabrasil-hg38
 1.3. Clonar o github do projeto ***TrabalhoFinal_Somatico2***
 
 ```
-%%bash
 git clone https://github.com/angelicanakagawa/TrabalhoFinal_Somatico2
 ```
 
 1.4. Instalar o BCFTools + split-vep
 
 ```
-%%bash
 git clone --recurse-submodules https://github.com/samtools/htslib.git
 git clone https://github.com/samtools/bcftools.git
 cd bcftools
@@ -55,7 +57,6 @@ make install
 1.5. Instalar o GATK - download e descompactação
 
 ```
-%%bash
 wget -c https://github.com/broadinstitute/gatk/releases/download/4.2.6.1/gatk-4.2.6.1.zip
 unzip gatk-4.2.6.1.zip
 ```
@@ -63,7 +64,6 @@ unzip gatk-4.2.6.1.zip
 1.6. Instalar o tabix
 
 ```
-%%bash
 apt-get install tabix
 ```
 
@@ -71,7 +71,6 @@ apt-get install tabix
 > Fonte: https://gist.github.com/mwufi/6718b30761cd109f9aff04c5144eb885; https://github.com/indigo-dc/udocker
 
 ```
-%%bash
 pip install udocker
 udocker --allow-root install
 ```
@@ -79,7 +78,6 @@ udocker --allow-root install
 1.8. Download da imagem do Ensembl-VEP utilizada no UDocker
 
 ```
-%%bash
 udocker --allow-root pull ensemblorg/ensembl-vep
 ```
 
@@ -92,14 +90,12 @@ Os arquivos deste projeto estão em hg19 (GRCh37), sendo necessário transformá
 > Fonte: https://drive.google.com/drive/folders/1m2qmd0ca2Nwb7qcK58ER0zC8-1_9uAiE?usp=sharing
 
 ```
-%%bash
 wget -c https://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz
 ```
 
 2.2. Descompactar o arquivo baixado
 
 ```
-%%bash
 gunzip hg19ToHg38.over.chain.gz
 ```
 
@@ -108,7 +104,6 @@ gunzip hg19ToHg38.over.chain.gz
 > Os VCF's estão escritos com diferentes nomenclaturas para a sinalização dos cromossomos. Nos arquivos do projeto ***TrabalhoFinal_Somatico2*** estão no formato "1, 2, 3, ...", enquanto que no arquivo que será utilizado no LiftOver está como "chr1, chr2, chr3, ..."
 
 ```
-%%bash
 # Criar o caminho dos VCF's deste projeto
 path_vcf="/content/TrabalhoFinal_Somatico2/arquivos_lmabrasil/vcfs_hg19"
 
@@ -138,7 +133,6 @@ done
 2.4. Compactar os arquivos VCF's com bgzip e criando os índices
 
 ```
-%%bash
 # Entrar no diretório de resultados
 cd resultados/vcfs_hg38
 
@@ -156,7 +150,6 @@ done
 2.5. Baixar o genoma de referência hg38
 
 ```
-%%bash
 # Baixar os arquivos
 wget https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.fasta
 wget https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.fasta.fai
@@ -172,7 +165,6 @@ mv Homo_sapiens_assembly38* genoma_referencia/
 2.6. Fazendo o LiftoverVcf usando o gatk
 
 ```
-%%bash
 # Entrar no diretório de resultados
 cd resultados/vcfs_hg38
 
@@ -199,7 +191,6 @@ Esta etapa é demorada para ser realizada no colab. Portanto, os comandos foram 
 Abaixo estão os comandos utilizados para uma única amostra (WP306):
 
 ```
-%%bash
 # Criar um diretório para armazenar os resultados finais da anotação (utilizar o comando "chmod 777" para permitir que usuários leiam, editem e executem arquivos no diretório criado)
 mkdir -p vep_output
 chmod 777 vep_output
@@ -248,7 +239,6 @@ udocker run --allow-root  -it --rm -v $(pwd):/data -v $REF:/referencia ensemblor
 4.1. Fazer uma cópia dos VCF's já anotados, contendo as amostras pós LiftOver para hg38
 
 ```
-%%bash
 # Remover o conteúdo existente na pasta "vep_output" (caso tenha sido feito o teste com a amostra "WP306")
 rm /content/lmabrasil-hg38/vep_output/*
 
@@ -259,7 +249,6 @@ cp /content/TrabalhoFinal_Somatico2/arquivos_lmabrasil/lmabrasil-lifOverhg19ToHg
 4.2. Criar uma lista com 9 genes de risco (+ 12 genes adicionais) para prognóstico ruim para mielofibrose
 
 ```
-%%bash
 echo -e "TP53\nCALR\nGFI1B\nJAK2\nMPIG6B\nMPL\nNBEAL2\nSH2B3\nSHOC2\nSRC\nTBXAS1\nTET2\nTLR8\nEZH2\nCBL\nU2AF1\nSRSF2\nIDH1\nIDH2\nNRAS\nKRAS\n" > /content/lmabrasil-hg38/hpo/mielofibrose.txt
 ```
 
@@ -272,8 +261,6 @@ SAMPLES = ["WP048","WP093","WP087","WP060","WP056","WP066","WP064","WP072","WP07
 4.4. Descompactação dos arquivos VCF's
 
 ```
-%%bash
-
 # Entrar no diretório de resultados
 cd lmabrasil-hg38/vep_output/
 
@@ -313,7 +300,7 @@ for i in SAMPLES:
   df.to_csv(f'/content/lmabrasil-hg38/csv_filtrados/{i}_filtrado.csv', index = False)
 ```
 
-### Etapa 5. Montar uma tabela final e vizualizar os resultados
+### Etapa 5. Montar uma tabela final e visualizar os resultados
 
 Resultado da filtragem das 30 amostras para mutações de prognóstico ruim para mielofibrose:
   - **Total de variantes encontradas nod genes alvo: 9**
@@ -341,10 +328,6 @@ dados.to_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv', index = Fa
 ```
 
 
-<img src = "figuras/figura1.png">
-
-**Figura 1** - Quantidade de variantes por gene
-
 ```
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -371,9 +354,12 @@ fig.write_html('/content/resultados/Variantes.html')
 fig.show()
 ```
 
-<img src = "figuras/figura2.png">
 
-**Figura 2** - Variantes de alto risco
+<img src = "figuras/figura1.png">
+
+**Figura 1** - Quantidade de variantes por gene
+
+
 
 ```
 import pandas as pd
@@ -401,9 +387,10 @@ fig.update_layout(xaxis_title = 'Amostra/Paciente', yaxis_title = 'Quantidade de
 fig.write_html('/content/resultados/VariantesAltoRisco.html')
 ```
 
-<img src = "figuras/figura3.png">
+<img src = "figuras/figura2.png">
 
-**Figura 3** - Variantes de alto risco
+**Figura 2** - Variantes de alto risco
+
 
 ```
 import pandas as pd
@@ -427,10 +414,10 @@ fig = px.pie(contagem_variantes, values = 'Quantidade', names = 'Variante', titl
 fig.write_html('/content/resultados/VariantesAltoRiscoPizza.html')
 fig.show()
 ```
+<img src = "figuras/figura3.png">
 
-<img src = "figuras/figura4.png">
+**Figura 3** - Variantes de alto risco
 
-**Figura 4** - Frequência de amostras com alterações em genes de alto risco
 
 ```
 import numpy as np
@@ -445,6 +432,11 @@ plt.pie(sections, labels=labels, autopct = '%1.1f%%')
 plt.title('Frequência de amostras com alterações em genes de alto risco')
 plt.show()
 ```
+
+<img src = "figuras/figura4.png">
+
+**Figura 4** - Frequência de amostras com alterações em genes de alto risco
+
 
 ### Etapa 5. Encontrar variantes em genes driver
 
