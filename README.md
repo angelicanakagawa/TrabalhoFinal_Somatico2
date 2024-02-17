@@ -1,4 +1,4 @@
-# Trabalho final - Grupo Somático 2
+# Trabalho final - Pipeline Somático 2
 Trabalho final do curso de pós-graduação em Bioinformática Aplicada a Genômica Médica - Einstein
 
 Integrantes:
