@@ -339,9 +339,11 @@ dados = pd.read_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv')
 dados = dados.rename(columns={'TumorID': 'AMOSTRA'})
 dados.to_csv('/content/lmabrasil-hg38/tabela_final/tabela_final.csv', index = False)
 ```
-![image](https://github.com/angelicanakagawa/TrabalhoFinal_Somatico2/figura1.png)
 
-Figura 1 - Quantidade de variantes por gene
+
+<img src = "figuras/figura1.png">
+
+**Figura 1** - Quantidade de variantes por gene
 
 ```
 import pandas as pd
@@ -369,7 +371,9 @@ fig.write_html('/content/resultados/Variantes.html')
 fig.show()
 ```
 
-Figura 2 - Variantes de alto risco
+<img src = "figuras/figura2.png">
+
+**Figura 2** - Variantes de alto risco
 
 ```
 import pandas as pd
@@ -397,7 +401,9 @@ fig.update_layout(xaxis_title = 'Amostra/Paciente', yaxis_title = 'Quantidade de
 fig.write_html('/content/resultados/VariantesAltoRisco.html')
 ```
 
-Figura 3 - Variantes de alto risco
+<img src = "figuras/figura3.png">
+
+**Figura 3** - Variantes de alto risco
 
 ```
 import pandas as pd
@@ -422,7 +428,9 @@ fig.write_html('/content/resultados/VariantesAltoRiscoPizza.html')
 fig.show()
 ```
 
-Figura 4 - Frequência de amostras com alterações em genes de alto risco
+<img src = "figuras/figura4.png">
+
+**Figura 4** - Frequência de amostras com alterações em genes de alto risco
 
 ```
 import numpy as np
