@@ -469,11 +469,9 @@ fig.show()
 
 > Teste CGI
 ```
-%%bash
+mkdir /content/CGI
 cd /content/lmabrasil-hg38/vep_output/
 
-
-%%bash
 # Gerar o arquivo "df_WP048-cgi.txt" com as colunas: CHR, POS, REF e ALT
 cut -f1-4 /content/lmabrasil-hg38/vep_output/liftOver_WP048_hg19ToHg38.vep.filter.tsv | sed -e "s/CHROM/CHR/g"  > df_WP048-cgi.txt
 head df_WP048-cgi.txt
@@ -491,7 +489,6 @@ r = requests.post('https://www.cancergenomeinterpreter.org/api/v1',
 r.json()
 
 # Visualizando os identificadores
-import requests
 job_id ="3cf2faf653502b3b458d"
 
 headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
@@ -500,7 +497,6 @@ r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, h
 r.json()
 
 # Download dos Resultados (file.zip)
-import requests
 job_id ="3cf2faf653502b3b458d"
 
 headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
@@ -509,8 +505,18 @@ r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, h
 with open('/content/CGI/file.zip', 'wb') as fd:
     fd.write(r._content)
 
+# Descompactar o arquivo file.zip
 !unzip /content/CGI/file.zip -d /content/CGI/
 
+# Resultado: "alterations.tsv"
 import pandas as pd
 pd.read_csv('/content/CGI/alterations.tsv', sep='\t', index_col=False, engine='python')
+
+# Resultado: "alterations.tsv"
+pd.read_csv('/content/CGI/biomarkers.tsv',sep='\t',index_col=False, engine= 'python')
+
+# Deletando o Job do CGI
+headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
+r = requests.delete('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers)
+r.json()
 ```
