@@ -488,7 +488,7 @@ r = requests.post('https://www.cancergenomeinterpreter.org/api/v1',
                 data=payload)
 r.json()
 
-# Visualizando os identificadores
+# Visualizar os identificadores
 job_id ="3cf2faf653502b3b458d"
 
 headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
@@ -505,7 +505,7 @@ r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, h
 with open('/content/CGI/file.zip', 'wb') as fd:
     fd.write(r._content)
 
-# Descompactar o arquivo file.zip
+# Descompactar o arquivo "file.zip"
 !unzip /content/CGI/file.zip -d /content/CGI/
 
 # Resultado: "alterations.tsv"
@@ -515,7 +515,7 @@ pd.read_csv('/content/CGI/alterations.tsv', sep='\t', index_col=False, engine='p
 # Resultado: "alterations.tsv"
 pd.read_csv('/content/CGI/biomarkers.tsv',sep='\t',index_col=False, engine= 'python')
 
-# Deletando o Job do CGI
+# Deletar o Job do CGI
 headers = {'Authorization': 'antoniosousa.js98@gmail.com bf6acfa27c682e8b136d'}
 r = requests.delete('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers)
 r.json()
